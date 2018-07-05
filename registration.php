@@ -24,7 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 		$passwordErr = "Password is required!";
 	}
 	else{
-		$password = test_input($_POST["password"]);		
+		$password = test_input($_POST["password"]);
+       
+		
 	}
 	if (empty($_POST["cpassword"])) {
 		$cpasswordErr = "This is required!";
@@ -55,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 	}
 	else{
 		$contact = test_input($_POST["contact"]);
+		
 	}
 }
 function test_input($data) {
@@ -62,35 +65,58 @@ $data = trim($data);
 $data = stripslashes($data);
 $data = htmlspecialchars($data);
 return $data;
+
+
 }
 
 ?>
-<h2>REGISTRATION FORM: <br><br></h2>
-<p><span class="error">* required field</span></p>
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-	USERNAME: <input type="text" name="name">
-	<span class="error">* <?php echo $nameErr;?></span>
+<h2><center>REGISTRATION FORM:</center> <br><br></h2>
+<p><center><span class="error">* required field</center></span></p>
+    <form method="post" action="">
+	<center>USERNAME: <input type="text" name="name"></center>
+	<center><span class="error">* <?php echo $nameErr;?></center></span>
 	<br><br>
-	PASSWORD: <input type="password" name="password">
-	<span class="error">* <?php echo $passwordErr;?></span>
+	<center>PASSWORD: <input type="password" name="password"></center>
+	<center><span class="error">* <?php echo $passwordErr;?></center></span>
+<?php
+ $password_length = 6;
+function password_strength($password) {
+	$returnVal = True;
+	if ( strlen($password) < $password_length ) {
+		$returnVal = False;
+		$password="Password should be 6 characters long!";
+	}
+	if ( !preg_match("#[0-7]+#", $password) ) {
+		$returnVal = False;
+		$password="Password must have at least one number!";
+	}
+	if ( !preg_match("#[A-Z]+#", $password) ) {
+		$returnVal = False;
+		$password="Password must have at least 1 uppercase letter!";
+	}
+	if ( !preg_match("/[\'^£$%&*()}{@#~?><>,|=_+!-]/", $password) ) {
+		$returnVal = False;
+		$password="Password should have at least 1 special character!";
+	}
+	return $returnVal;
+}		
+		?>	
 	<br><br>
-	CONFIRM PASSWORD: <input type="password" name="cpassword">
-	<span class="error">* <?php echo $cpasswordErr;?></span>
+	<center>CONFIRM PASSWORD: <input type="password" name="cpassword"></center>
+	<center><span class="error">* <?php echo $cpasswordErr;?></center></span>
 	<br><br>
-	EMAIL: <input type="text" name="email">
-	<span class="error">* <?php echo $emailErr;?></span>
+	<center>EMAIL: <input type="text" name="email"></center>
+	<center><span class="error">* <?php echo $emailErr;?></center></span>
 	<br><br>
-	CONFIRM EMAIL: <input type="text" name="cemail">
-	<span class="error">* <?php echo $cemailErr;?></span>
+	<center>CONFIRM EMAIL: <input type="text" name="cemail"></center>
+	<center><span class="error">* <?php echo $cemailErr;?></center></span>
 	<br><br>
-	CONTACT NUMBER: <input type="number" name="contact">
+	<center>CONTACT NUMBER: <input type="number" name="contact"></center>
 	<br><br>
-	<input type="submit" name="submit" value="Submit">
-	
+	<center><input type="submit" name="submit" value="LOGIN"></center>
 	<br><br>
 	
 </br>
 </form>
-
 </body>
 </html>
